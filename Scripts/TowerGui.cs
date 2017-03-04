@@ -1,39 +1,53 @@
-﻿//This system is highly experimental and subject to change
-//as the project matures, hence all the comments.
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterGui : MonoBehaviour
+public class TowerGui : MonoBehaviour
 {
-    //TestBaseCharacter needs to be replaced by the final
-    //base character script.
-    private TestBaseCharacter _bc;
+    private TestBaseTower _bt;
 
     private GuiController _gc;
 
     [SerializeField]
     private Image _healthBar;
 
+    [SerializeField]
+    private Image[] _ammoBar;
+
+    [SerializeField]
+    private Sprite _ammoSymbol;
+
     void Start()
     {
-        _bc = GetComponentInParent<TestBaseCharacter>();
+        _bt = GetComponentInParent<TestBaseTower>();
         _gc = FindObjectOfType<GuiController>();
-        _gc.StatBarUpdates += SetHealthBar;
+
+        _gc.StatBarUpdates += SetTowerGui;
     }
 
-    void SetHealthBar()
+    void SetTowerGui()
     {
-        //Opted for this instead of passing int into the event as a parameter.
-        //This is because if we give the event a value, it will change the health
-        //bar for all of the characters by that same amount. That is not what we want.
-        float health = _bc.GetHealth();
-        float maxHealth = _bc.GetMaxHealth();
+        float health = _bt.GetHealth();
+        float maxHealth = _bt.GetMaxHealth();
         float newSize = health / maxHealth;
 
         StartCoroutine(LerpHealthBar(newSize));
+        SetAmmoGui();
+    }
+    void SetAmmoGui()
+    {
+        for (int i = 0; i < _bt.GetMaxAmmo(); i++)
+        {
+            if (i < _bt.GetAmmo())
+            {
+                _ammoBar[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                _ammoBar[i].gameObject.SetActive(false);
+            }
+        }
     }
 
     IEnumerator LerpHealthBar(float targetSize)

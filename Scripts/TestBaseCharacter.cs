@@ -12,16 +12,16 @@ public class TestBaseCharacter : MonoBehaviour
     //This is Only for testing
 
     [SerializeField]
-    private int maxHealth,
-                health,
-                maxStamina,
-                stamina;
+    private int _maxHealth,
+                _health,
+                _maxStamina,
+                _stamina;
 
-    private GuiController gc;
+    private GuiController _gc;
 
     void Start()
     {
-        gc = FindObjectOfType<GuiController>();
+        _gc = FindObjectOfType<GuiController>();
     }
     void Update()
     {
@@ -45,25 +45,31 @@ public class TestBaseCharacter : MonoBehaviour
         //This is only for testing
     }
 
+    //Getters
     public int GetHealth()
     {
-        return health;
+        return _health;
     }
     public int GetStamina()
     {
-        return stamina;
+        return _stamina;
+    }
+    public int GetMaxHealth()
+    {
+        return _maxHealth;
     }
 
+    //Setters
     void SetHealth(int changeAmount)
     {
-        health += changeAmount;
-        health = Mathf.Clamp(health, 0, maxHealth);
-        gc.UpdateStatBars();
+        _health += changeAmount;
+        _health = Mathf.Clamp(_health, 0, _maxHealth);
+        _gc.UpdateStatBars();
     }
     void SetStamina(int changeAmount)
     {
-        stamina += changeAmount;
-        stamina = Mathf.Clamp(stamina, 0, maxStamina);
-        gc.UpdateStatBars();
+        _stamina += changeAmount;
+        _stamina = Mathf.Clamp(_stamina, 0, _maxStamina);
+        _gc.UpdateStatBars();
     }
 }
